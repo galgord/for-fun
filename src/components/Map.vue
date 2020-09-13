@@ -38,7 +38,7 @@ export default {
     this.coordinates = location;
   },
      error => {
-       return error.message;
+       alert(error.message);
      },
 )   
 }
