@@ -36,7 +36,7 @@ export default {
       // Here we cathing 'load' map event
     const asyncActions = event.component.actions
     const newParams = await asyncActions.flyTo({
-        center: [this.coordinates[0],this.coordinates[1]],
+        center: this.coordinates,
         zoom: 9,
         speed: 1
       })
@@ -51,29 +51,29 @@ export default {
 },
 computed:{
     getCoordinates: function(){
-    let lon = 0
-    let lat = 0
-    let error = ""
+    let lon;
+    let lat;
     navigator.geolocation.getCurrentPosition(
     position => {
      lon = position.coords.longitude
      lat = position.coords.latitude    
-    
+      return this.coordinates = [lon,lat]
   },
      error => {
        error = error.message;
      })
- var ll = new Mapbox.LngLat(lon,lat)
- return this.coordinates = ll
+    //  var ll = new Mapbox.LngLat(lon,lat)
+    //  console.log(ll) 
+ return []
 }
 },
-// watch: {
-//   getCoordinates: {
-//     handler: function (newVal) {
-//       this.$set(this.coordinates,newVal)
-//       }
-//   }
-// },
+watch: {
+  getCoordinates: {
+    handler: function (newVal) {
+      this.coordinates =newVal
+      }
+  }
+},
     // beforeMount(){
     // this.getLocation()
     // },
