@@ -1,11 +1,13 @@
 <template>
 <div>
-
+<button @click="test(this)">Test Me</button>
 <div id="map" style="width:100vw; height:85vh">
   <MglMap
     :accessToken="mapboxAccessToken"
     :mapStyle.sync="mapStyle"
     :center="coordinates"
+    @load="onMapLoad"
+
     
   >
     <MglMarker :coordinates="coordinates" color="blue" />
@@ -15,6 +17,7 @@
 </template>
 
 <script>
+import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
 
 export default {
@@ -30,22 +33,41 @@ export default {
     };
   },
   methods:{
-    getLocation: function(){
-    var location = []
-   navigator.geolocation.getCurrentPosition(
+    async onMapLoad(event) {
+      // Here we cathing 'load' map event
+    const asyncActions = event.component.actions
+    navigator.geolocation.getCurrentPosition(
     position => {
-    location = [position.coords.longitude,position.coords.latitude]
-    this.coordinates = location;
+    let lon = position.coords.longitude
+    let lat = position.coords.latitude
+    this.coordinates[0] = lon
+    this.coordinates[1] = lat
+    console.log(this.coordinates)
   },
      error => {
        alert(error.message);
-     },
-)   
-}
-    },
-    beforeMount(){
-    this.getLocation()
+     })
+      const newParams = await asyncActions.flyTo({
+        center: [this.coordinates[0],this.coordinates[1]],
+        zoom: 9,
+        speed: 1
+      })
+      /* => {
+              center: [30, 30],
+              zoom: 9,
+              bearing: 9,
+              pitch: 7
+            }
+      */
     }
+},
+    // beforeMount(){
+    // this.getLocation()
+    // },
+      created() {
+    // We need to set mapbox-gl library here in order to use it in template
+    this.mapbox = Mapbox;
+  }
   };
 </script>
 
