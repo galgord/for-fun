@@ -19,6 +19,7 @@
 <script>
 import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
+import {MAP_ACCESS_TOKEN} from '../../config.js'
 
 export default {
   components: {
@@ -27,7 +28,7 @@ export default {
   },
   data() {
     return {
-      mapboxAccessToken:"pk.eyJ1IjoiZ2FsZ29yZG9uIiwiYSI6ImNrZjE2b280MzB2azIyeG8wbTdxazBvaXUifQ.UrMcasMni4SJeCf7KGYQrA",
+      mapboxAccessToken: MAP_ACCESS_TOKEN,
       mapStyle: "mapbox://styles/galgordon/ckf15jvyz2or61at0ww55hapq",
       coordinates: [-111.549668, 39.014]
     };
