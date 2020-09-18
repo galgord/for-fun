@@ -6,9 +6,7 @@
     :accessToken="mapboxAccessToken"
     :mapStyle.sync="mapStyle"
     :center="coordinates"
-    @load="onMapLoad"
-
-    
+    @load="onMapLoad"  
   >
     <MglMarker :coordinates="coordinates" color="blue" />
   </MglMap>
@@ -19,7 +17,7 @@
 <script>
 import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
-import {MAP_ACCESS_TOKEN} from '../../config.js'
+import {MAP_ACCESS_TOKEN,MAP_STYLE} from '../../config.js'
 
 export default {
   components: {
@@ -29,26 +27,15 @@ export default {
   data() {
     return {
       mapboxAccessToken: MAP_ACCESS_TOKEN,
-      mapStyle: "mapbox://styles/galgordon/ckf15jvyz2or61at0ww55hapq",
-      coordinates: [-111.549668, 39.014]
+      mapStyle: MAP_STYLE,
+      coordinates: [0,0]
     };
   },
   methods:{
     async onMapLoad(event) {
       // Here we cathing 'load' map event
     const asyncActions = event.component.actions
-    navigator.geolocation.getCurrentPosition(
-    position => {
-    let lon = position.coords.longitude
-    let lat = position.coords.latitude
-    this.coordinates[0] = lon
-    this.coordinates[1] = lat
-    console.log(this.coordinates)
-  },
-     error => {
-       alert(error.message);
-     })
-      const newParams = await asyncActions.flyTo({
+    const newParams = await asyncActions.flyTo({
         center: [this.coordinates[0],this.coordinates[1]],
         zoom: 9,
         speed: 1
@@ -62,6 +49,31 @@ export default {
       */
     }
 },
+computed:{
+    getCoordinates: function(){
+    let lon = 0
+    let lat = 0
+    let error = ""
+    navigator.geolocation.getCurrentPosition(
+    position => {
+     lon = position.coords.longitude
+     lat = position.coords.latitude    
+    
+  },
+     error => {
+       error = error.message;
+     })
+ var ll = new Mapbox.LngLat(lon,lat)
+ return this.coordinates = ll
+}
+},
+// watch: {
+//   getCoordinates: {
+//     handler: function (newVal) {
+//       this.$set(this.coordinates,newVal)
+//       }
+//   }
+// },
     // beforeMount(){
     // this.getLocation()
     // },
