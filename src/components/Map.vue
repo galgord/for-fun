@@ -6,9 +6,15 @@
     :accessToken="mapboxAccessToken"
     :mapStyle.sync="mapStyle"
     :center="coordinates"
-    @load="onMapLoad"  
+    @load="onMapLoad" 
+    :attributionControl="false"
   >
     <MglMarker :coordinates="coordinates" color="blue" />
+    <AttributionControl />
+    <NavigationControl position="top-right" />
+    <GeolocateControl position="top-right" />
+    <ScaleControl />
+
   </MglMap>
 </div>
 </div>
@@ -16,13 +22,23 @@
 
 <script>
 import Mapbox from "mapbox-gl";
-import { MglMap, MglMarker } from "vue-mapbox";
+import { MglMap,
+         MglMarker, 
+         MglAttributionControl,
+         MglNavigationControl,
+         MglGeolocateControl,
+         MglScaleControl 
+         } from "vue-mapbox";
 import {MAP_ACCESS_TOKEN,MAP_STYLE} from '../../config.js'
 
 export default {
   components: {
     MglMap,
-    MglMarker
+    MglMarker,
+    AttributionControl: MglAttributionControl,
+    NavigationControl: MglNavigationControl,
+    GeolocateControl: MglGeolocateControl,
+    ScaleControl: MglScaleControl
   },
   data() {
     return {
@@ -34,10 +50,16 @@ export default {
   methods:{
     async onMapLoad(event) {
       // Here we cathing 'load' map event
+//       this.MglMap.addControl(new Mapbox.GeolocateControl({
+// positionOptions: {
+// enableHighAccuracy: true
+// },
+// trackUserLocation: true
+// }));
     const asyncActions = event.component.actions
     const newParams = await asyncActions.flyTo({
         center: this.coordinates,
-        zoom: 9,
+        zoom: 15,
         speed: 1
       })
       /* => {
@@ -53,15 +75,22 @@ computed:{
     getCoordinates: function(){
     let lon;
     let lat;
+    var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
     navigator.geolocation.getCurrentPosition(
     position => {
      lon = position.coords.longitude
-     lat = position.coords.latitude    
+     lat = position.coords.latitude   
+     console.log(lon,lat) 
       return this.coordinates = [lon,lat]
   },
      error => {
        error = error.message;
-     })
+     },options
+    )
     //  var ll = new Mapbox.LngLat(lon,lat)
     //  console.log(ll) 
  return []
