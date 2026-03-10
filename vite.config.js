@@ -13,12 +13,14 @@ export default defineConfig({
         name: 'CyberGym',
         short_name: 'CyberGym',
         description: 'Upper-body calisthenics tracker',
-        theme_color: '#0A0A0F',
-        background_color: '#0A0A0F',
+        theme_color: '#000000',
+        background_color: '#000000',
         display: 'standalone',
+        start_url: '/',
+        scope: '/',
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
       },
       workbox: {
