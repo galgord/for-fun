@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --color-bg: #000000;
+  --color-card: #1C1C1E;
+  --color-card-hover: #2C2C2E;
+  --color-primary: #FFFFFF;
+  --color-success: #30D158;
+  --color-warning: #FFD60A;
+  --color-destructive: #FF453A;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #98989D;
+  --color-text-tertiary: #636366;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-separator: rgba(255, 255, 255, 0.05);
+  --color-fill: rgba(255, 255, 255, 0.05);
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: 'Inter Variable', -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
+
+  input {
+    font-family: inherit;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes toast-in {
+  0% { opacity: 0; transform: translate(-50%, -12px); }
+  100% { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.animate-toast {
+  animation: toast-in 0.25s ease-out;
+}
